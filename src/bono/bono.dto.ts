@@ -15,9 +15,11 @@ export class BonoDto {
     @IsNotEmpty()
     palabraclave: string;
 
+    @IsNumber()
     @IsNotEmpty()
-    claseId: Long;
+    claseId: number;
 
+    @IsNumber()
     @IsNotEmpty()
-    usuarioId: Long;
+    usuarioId: number;
 }
