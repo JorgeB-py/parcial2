@@ -23,8 +23,8 @@ export class UsuarioEntity {
     @Column()
     rol: Role;
 
-    @Column()
-    jefe: UsuarioEntity;
+    @Column({nullable:true})
+    jefeId: number;
 
     @OneToMany(() => BonoEntity, bonos => bonos.usuario)
     bonos: BonoEntity[];
