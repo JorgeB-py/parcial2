@@ -10,8 +10,8 @@ export class BonoEntity {
     @Column()
     monto: number;
 
-    @Column()
-    calificacion: Double;
+    @Column({ type: 'decimal', nullable: false })
+    calificacion: number;
 
     @Column()
     palabraclave: string;
