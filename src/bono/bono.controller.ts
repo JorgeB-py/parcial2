@@ -1,16 +1,17 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { UseInterceptors } from '@nestjs/common';
 import { BusinessErrorsInterceptor } from '../shared/interceptors/business-errors.interceptor';
-import { plainToInstance } from 'class-transformer';
 import { BonoService } from './bono.service';
 import { Long } from 'typeorm';
 import { BonoDto } from './bono.dto';
-import { BonoEntity } from './bono.entity';
+
 
 @UseInterceptors(BusinessErrorsInterceptor)
 @Controller('bono')
 export class BonoController {
-    constructor(private readonly bonoService: BonoService) { }
+    constructor(private readonly bonoService: BonoService,
+        
+    ) { }
 
     @Get()
     async findAll() {
@@ -24,8 +25,7 @@ export class BonoController {
 
     @Post()
     async create(@Body() bonoDto: BonoDto) {
-        const deudor: BonoEntity = plainToInstance(BonoEntity, bonoDto);
-        return await this.bonoService.create(deudor);
+        return await this.bonoService.create(bonoDto);
     }
 
     @Delete(':bonoId')

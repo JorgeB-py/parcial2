@@ -1,4 +1,4 @@
-import { IsNotEmpty, isNumber, IsNumber, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, isNumber, IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Long } from 'typeorm';
 
 export class BonoDto {
@@ -15,11 +15,9 @@ export class BonoDto {
     @IsNotEmpty()
     palabraclave: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    claseId: number;
+    @IsOptional()
+    claseId: Long;
 
-    @IsNumber()
-    @IsNotEmpty()
-    usuarioId: number;
+    @IsOptional()
+    usuarioId: Long;
 }

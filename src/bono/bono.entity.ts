@@ -1,6 +1,7 @@
-import { ClaseEntity } from 'src/clase/clase.entity';
-import { UsuarioEntity } from 'src/usuario/usuario.entity';
-import { Column, Double, Entity, Long, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { ClaseEntity } from '../clase/clase.entity';
+import { UsuarioEntity } from '../usuario/usuario.entity';
+import { Column, Double, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Long } from 'typeorm';
 
 @Entity()
 export class BonoEntity {

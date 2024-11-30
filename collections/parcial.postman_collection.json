@@ -1,0 +1,536 @@
+{
+	"info": {
+		"_postman_id": "ab7f14fd-0475-4aa4-9b50-05046636e156",
+		"name": "parcial",
+		"description": "Esta colección contiene las solicitudes necesarias para probar las funcionalidades de la API REST desarrollada como parte del Parcial 2 de Desarrollo Web.\n\nIncluye endpoints para gestionar las entidades de **Bono**, **Usuario** y **Clase**, cubriendo casos de creación, consulta, actualización y eliminación de registros. Las pruebas también validan las reglas de negocio implementadas y permiten verificar el comportamiento esperado del sistema ante datos válidos e inválidos.\n\n### Estructura de la colección:\n\n1. **Bono**  \n    Endpoints para la gestión de los bonos asociados a usuarios y clases, incluyendo validaciones como la existencia de las asociaciones y restricciones en los valores permitidos.\n    \n2. **Usuario**  \n    Endpoints para la creación y gestión de usuarios, considerando las características particulares de su rol (e.g., profesor y decana) y las asociaciones con clases y bonos.\n    \n3. **Clase**  \n    Endpoints para manejar clases y asociarlas posteriormente con usuarios y bonos, permitiendo crear instancias vacías o parcialmente asociadas.\n    \n\nLos ejemplos de cuerpo de peticiones se encuentran en los raws de cada petición.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29751280"
+	},
+	"item": [
+		{
+			"name": "Bono",
+			"item": [
+				{
+					"name": "Crear bono",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()\r",
+									"pm.globals.set(\"id\", data.id);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"monto\": 2,\r\n    \"palabraclave\": \"palabra\",\r\n    \"calificacion\": 3,\r\n    \"claseId\": null,\r\n    \"usuarioId\": null\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/bono",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bono"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un bono",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bono/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bono",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los bonos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Number of bonos > ' + 0, function () {\r",
+									"   var data = pm.response.json()\r",
+									"   pm.expect(data.length).to.greaterThan(0)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bono",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bono"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un bono que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The bono with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bono/0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bono",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar un bono",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/bono/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"bono",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este grupo de endpoints permite gestionar los bonos asociados a usuarios y clases. Incluye funcionalidades para crear, consultar y eliminar bonos, validando las siguientes reglas de negocio:\n\n- Un bono debe tener un monto válido (no puede ser negativo ni nulo).\n    \n- Los bonos deben estar opcionalmente asociados a un usuario y/o una clase.\n    \n- No se pueden eliminar bonos con calificación mayor a 4.  \n    Estos endpoints son clave para verificar las restricciones y la consistencia de las asociaciones con otras entidades.\n    \n\nValidaciones creadas:\n\n- **POST Crear bono:**  \n    Se probó para verificar que la creación de un bono cumpla con las reglas de negocio, como que el monto sea válido y que las asociaciones con clases y usuarios sean opcionales al momento de la creación.\n    \n- **GET Obtener un bono:**  \n    Este caso prueba que se pueda recuperar la información de un bono existente, incluyendo sus relaciones con clase y usuario, validando su correcta consulta.\n    \n- **GET Obtener todos los bonos:**  \n    Se incluyó para validar que el sistema liste todos los bonos registrados, confirmando que las relaciones y atributos estén cargados adecuadamente.\n    \n- **GET Obtener un bono que no existe:**  \n    Prueba un caso negativo en el que se intenta consultar un bono con un ID no existente, verificando que el sistema maneje correctamente errores de \"No encontrado\".\n    \n- **DELETE Borrar un bono:**  \n    Este caso se utilizó para comprobar que los bonos pueden eliminarse solo si cumplen las restricciones, como que la calificación sea menor o igual a 4.\n    \n\nCódigos de respuesta:\n\n- 204\n    \n- 201\n    \n- 200\n    \n- 404\n    \n\n\\-"
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Crear usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()\r",
+									"pm.globals.set(\"id\", data.id);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Camilo Escobar\",\r\n    \"cedula\":\"123456789\",\r\n    \"extension\": 12345679,\r\n    \"jefeId\":1,\r\n    \"grupoinvestigacion\": \"TICS\",\r\n    \"rol\": \"profesor\",\r\n    \"BonosId\": [],\r\n    \"clasesId\": []\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un usuario que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The usuario with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar un usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"   pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este conjunto de endpoints permite la gestión de usuarios, con validaciones específicas según su rol (profesor o estudiante). Las funcionalidades incluyen la creación, consulta y eliminación de usuarios. Reglas importantes incluyen:\n\n- Los profesores deben pertenecer a grupos de investigación válidos.\n    \n- Los estudiantes deben tener extensiones con al menos 8 caracteres.\n    \n- Los usuarios pueden asociarse opcionalmente a clases y bonos, pero estas asociaciones pueden añadirse o modificarse posteriormente.  \n    Estos endpoints validan las reglas de negocio relacionadas con los usuarios y su interacción con otras entidades.\n    \n\nCreados:\n\n- **POST Crear usuario:**  \n    Se probó para validar que los usuarios puedan ser creados con roles válidos y cumpliendo las restricciones (como el grupo de investigación para profesores o la extensión para estudiantes).\n    \n- **GET Obtener un usuario:**  \n    Este caso prueba que un usuario existente pueda ser consultado, verificando que se devuelvan correctamente sus datos y relaciones (bonos y clases).\n    \n- **GET Obtener un usuario que no existe:**  \n    Prueba un caso negativo para validar que el sistema maneje adecuadamente consultas a usuarios inexistentes, devolviendo el error correspondiente.\n    \n- **DELETE Borrar un usuario:**  \n    Se incluyó para verificar que solo se puedan eliminar usuarios que no tengan restricciones, como tener bonos asociados o ser decanos.\n    \n\nCódigos de respuesta:\n\n- 204\n    \n- 201\n    \n- 200\n    \n- 404"
+		},
+		{
+			"name": "Clase",
+			"item": [
+				{
+					"name": "Crear clase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()\r",
+									"pm.globals.set(\"id\", data.id);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"codigo\": \"1547895321\",\r\n    \"nombre\": \"Introducción a la Programación\",\r\n    \"numerocreditos\": 3,\r\n    \"bonos\": [],\r\n    \"usuarioId\": null\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/clase",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una clase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/clase/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clase",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una clase que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The clase with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/clase/0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"clase",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Los endpoints relacionados con clases permiten la gestión de las mismas, incluyendo su creación, consulta y asociación con usuarios y bonos. Este módulo considera los siguientes aspectos:\n\n- Las clases pueden crearse inicialmente sin asociarse a usuarios o bonos.\n    \n- El código de una clase debe ser válido (exactamente 10 caracteres).\n    \n- Permite actualizar asociaciones entre clases, bonos y usuarios después de su creación.  \n    Estos endpoints aseguran la correcta administración y vinculación de las clases en el sistema.\n    \n\nCreados:\n\n1. **POST Crear clase:**  \n    Este caso verifica que las clases puedan crearse cumpliendo las validaciones (como el código de longitud exacta de 10 caracteres) y permitiendo asociaciones iniciales nulas.\n    \n2. **GET Obtener una clase:**  \n    Se probó para confirmar que se pueda consultar una clase existente, devolviendo correctamente su información y sus relaciones.\n    \n3. **GET Obtener una clase que no existe:**  \n    Prueba un caso negativo para verificar que el sistema maneje adecuadamente intentos de consultar clases no existentes, devolviendo el error correspondiente.\n    \n\nCódigos de respuesta:\n\n- 201\n    \n- 200\n    \n- 404"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwtToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
